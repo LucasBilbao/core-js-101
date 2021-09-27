@@ -444,8 +444,12 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const folders = pathes.map((item) => item.split('/'));
+  const transformed = folders[0].map((_, i) => folders.map((item) => item[i]));
+  const common = transformed.filter((item1) => item1.every((item2) => item2 === item1[0]));
+  const commonPath = [...common, ['']].map((item) => item[0]).join('/');
+  return commonPath;
 }
 
 /**
@@ -466,8 +470,19 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const product = [];
+
+  for (let i = 0; i < m1.length; i += 1) {
+    product[i] = [];
+    for (let j = 0; j < m2[i].length; j += 1) {
+      product[i][j] = 0;
+      for (let k = 0; k < m1[i].length; k += 1) {
+        product[i][j] += m1[i][k] * m2[k][j];
+      }
+    }
+  }
+  return product;
 }
 
 /**
@@ -500,8 +515,57 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  let x;
+  let o;
+  const l = position.length;
+
+  // Horizontal
+  for (let i = 0; i < l; i += 1) {
+    x = 0;
+    o = 0;
+    for (let j = 0; j < l; j += 1) {
+      if (position[i][j] === 'X') x += 1;
+      if (position[i][j] === '0') o += 1;
+      if (x === 3) return 'X';
+      if (o === 3) return '0';
+    }
+  }
+
+  // Vertical
+  for (let i = 0; i < l; i += 1) {
+    x = 0;
+    o = 0;
+    for (let j = 0; j < l; j += 1) {
+      if (position[j][i] === 'X') x += 1;
+      if (position[j][i] === '0') o += 1;
+      if (x === 3) return 'X';
+      if (o === 3) return '0';
+    }
+  }
+
+
+  // Diagonal \
+  x = 0;
+  o = 0;
+  for (let i = 0; i < l; i += 1) {
+    if (position[i][i] === 'X') x += 1;
+    if (position[i][i] === '0') o += 1;
+    if (x === 3) return 'X';
+    if (o === 3) return '0';
+  }
+
+
+  // Diagonal /
+  x = 0;
+  o = 0;
+  for (let i = 0; i < l; i += 1) {
+    if (position[i][l - i - 1] === 'X') x += 1;
+    if (position[i][l - i - 1] === '0') o += 1;
+    if (x === 3) return 'X';
+    if (o === 3) return '0';
+  }
+  return undefined;
 }
 
 module.exports = {
